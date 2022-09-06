@@ -5,12 +5,16 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64
     && chmod +x Miniconda3-py39_4.12.0-Linux-x86_64.sh \
     && ./Miniconda3-py39_4.12.0-Linux-x86_64.sh -b -p $HOME/miniconda3
 
-# Get Stable Diffusion as a notebook
+# Get Stable Diffusion as a folder
 RUN wget https://github.com/hlky/stable-diffusion/archive/refs/heads/main.zip  \
     && unzip main.zip && mv stable-diffusion-main stable-diffusion && rm main.zip \
     && $HOME/miniconda3/bin/conda env create -f stable-diffusion/environment.yaml
 
-# Get Latent Diffusion inside the notebook
+# Get Textual Inversion inside the folder
+RUN wget https://github.com/hlky/sd-enable-textual-inversion/archive/refs/heads/main.zip  \
+    && unzip main.zip && mv -f sd-enable-textual-inversion-main stable-diffusion && rm main.zip
+
+# Get Latent Diffusion inside the folder
 RUN wget https://github.com/devilismyfriend/latent-diffusion/archive/refs/heads/main.zip  \
     && unzip main.zip && mv latent-diffusion-main stable-diffusion/src/latent-diffusion && rm main.zip
 
