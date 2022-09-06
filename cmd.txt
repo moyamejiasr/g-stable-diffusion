@@ -1,0 +1,2 @@
+docker build -t onelio/g-stable-diffusion:tag .
+docker push onelio/g-stable-diffusion:tag
