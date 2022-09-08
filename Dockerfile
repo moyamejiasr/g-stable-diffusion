@@ -1,23 +1,22 @@
 FROM paperspace/gradient-base:pt112-tf29-jax0314-py39-updated
 
-# Install Miniconda3
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh \
-    && chmod +x Miniconda3-py39_4.12.0-Linux-x86_64.sh \
-    && ./Miniconda3-py39_4.12.0-Linux-x86_64.sh -b -p $HOME/miniconda3
+# Install Python packages
+RUN pip install --upgrade pip && pip install -U numpy --prefer-binary \
+    && pip install wheel transformers==4.19.2 diffusers invisible-watermark --prefer-binary \
+    && pip install git+https://github.com/crowsonkb/k-diffusion.git --prefer-binary --only-binary=psutil \
+    && pip install git+https://github.com/TencentARC/GFPGAN.git --prefer-binary
 
-# Get Stable Diffusion as a folder
-RUN wget https://github.com/hlky/stable-diffusion/archive/refs/heads/main.zip  \
-    && unzip main.zip && mv stable-diffusion-main stable-diffusion && rm main.zip \
-    && $HOME/miniconda3/bin/conda env create -f stable-diffusion/environment.yaml
+# Clone and get requirements for webui
+RUN git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git stable-diffusion \
+    && pip install -r stable-diffusion/requirements_versions.txt --prefer-binary
 
-# Get Textual Inversion inside the folder
-RUN wget https://github.com/hlky/sd-enable-textual-inversion/archive/refs/heads/main.zip  \
-    && unzip main.zip && mv -f sd-enable-textual-inversion-main stable-diffusion && rm main.zip
+WORKDIR /stable-diffusion
 
-# Get Latent Diffusion inside the folder
-RUN wget https://github.com/devilismyfriend/latent-diffusion/archive/refs/heads/main.zip  \
-    && unzip main.zip && mv latent-diffusion-main stable-diffusion/src/latent-diffusion && rm main.zip
+# Clone base repositories
+RUN git clone https://github.com/CompVis/stable-diffusion.git repositories/stable-diffusion \
+    && git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers \
+    && git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer \
+    && pip install -r repositories/CodeFormer/requirements.txt --prefer-binary
 
-# Get pretrained model data into cache
-RUN wget https://github.com/DagnyT/hardnet/raw/master/pretrained/train_liberty_with_aug/checkpoint_liberty_with_aug.pth \
-    -P /root/.cache/torch/hub/checkpoints
+# Copy basic config
+COPY config.json .

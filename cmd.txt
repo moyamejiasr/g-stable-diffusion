@@ -1,2 +1,3 @@
 docker build -t onelio/g-stable-diffusion:tag .
 docker push onelio/g-stable-diffusion:tag
+docker run --name sd --gpus all -t -v "$(pwd)/sd/model.ckpt:/stable-diffusion/model.ckpt" -v "$(pwd)/gfpgan/GFPGANv1.3.pth:/stable-diffusion/GFPGANv1.3.pth" -t onelio/g-stable-diffusion:tag
