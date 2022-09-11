@@ -1,6 +1,6 @@
 FROM paperspace/gradient-base:pt112-tf29-jax0314-py39-updated
 
-# Install Python packages
+# Install Python packages for stable-diffusion
 RUN pip install --upgrade pip && pip install -U numpy --prefer-binary \
     && pip install wheel transformers==4.19.2 diffusers invisible-watermark --prefer-binary \
     && pip install git+https://github.com/crowsonkb/k-diffusion.git --prefer-binary --only-binary=psutil \
