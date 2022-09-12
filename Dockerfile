@@ -16,7 +16,13 @@ WORKDIR /stable-diffusion
 RUN git clone https://github.com/CompVis/stable-diffusion.git repositories/stable-diffusion \
     && git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers \
     && git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer \
-    && pip install -r repositories/CodeFormer/requirements.txt --prefer-binary
+    && pip install -r repositories/CodeFormer/requirements.txt --prefer-binary \
+    && git clone https://github.com/salesforce/BLIP.git repositories/BLIP
 
 # Copy basic config
 COPY config.json .
+
+# Run pre-caching proccess
+ADD precache.py ./repositories/stable-diffusion/scripts
+RUN chmod +x ./repositories/stable-diffusion/scripts/precache.py \
+    && python ./repositories/stable-diffusion/scripts/precache.py

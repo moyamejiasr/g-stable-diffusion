@@ -1,5 +1,5 @@
 {
-    "grid_save": false,
+    "grid_save": false, "return_grid": false,
     "outdir_txt2img_samples": "/notebooks/txt2img",
     "outdir_img2img_samples": "/notebooks/img2img",
     "outdir_extras_samples": "/notebooks/extras-images"
