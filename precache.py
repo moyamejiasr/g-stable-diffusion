@@ -9,7 +9,7 @@ import transformers
 
 transformers.logging.set_verbosity_error()
 
-# this will preload the Bert tokenizer fles
+# this will preload the Bert tokenizer files
 print('Preloading bert tokenizer...')
 tokenizer = BertTokenizerFast.from_pretrained('bert-base-uncased')
 print('Success')

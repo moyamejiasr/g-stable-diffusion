@@ -13,3 +13,8 @@ COPY config.json .
 
 ENV COMMANDLINE_ARGS "--skip-torch-cuda-test --exit"
 RUN python launch.py
+
+# Run pre-caching proccess
+ADD precache.py ./repositories/stable-diffusion/scripts
+RUN chmod +x ./repositories/stable-diffusion/scripts/precache.py \
+    && python ./repositories/stable-diffusion/scripts/precache.py
