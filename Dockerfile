@@ -1,5 +1,7 @@
 FROM paperspace/gradient-base:pt112-tf29-jax0314-py39-updated
 
+RUN apt update && apt -y install sshpass
+
 # Install Python packages for stable-diffusion
 RUN pip install --upgrade pip && pip install -U numpy --prefer-binary
 
@@ -11,7 +13,7 @@ WORKDIR /stable-diffusion
 # Copy basic config
 COPY config.json .
 
-ENV COMMANDLINE_ARGS "--skip-torch-cuda-test --exit"
+ENV COMMANDLINE_ARGS "--xformers --skip-torch-cuda-test --exit"
 RUN python launch.py
 
 # Run pre-caching proccess
